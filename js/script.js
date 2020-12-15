@@ -8,7 +8,9 @@ window.addEventListener('DOMContentLoaded', () => {
 	const shirtColorSelect = document.querySelector('#color');
 	const activitiesDiv = document.querySelector('.activities-box');
 	const activitiesCost = document.querySelector('.activities-cost');
+	const paymentSelect = document.querySelector('#payment');
 
+	// Initial setup when page loads
 	// Apply focus to name field
 	nameField.focus();
 
@@ -17,6 +19,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	// Disable shirt color select element
 	toggleShirtColorSelect(true);
+
+	// Default payment select to credit card
+	paymentSelect.selectedIndex = 1;
 
 	// Helper functions
 	function updateShirtColorOptions(design) {
@@ -39,15 +44,26 @@ window.addEventListener('DOMContentLoaded', () => {
 		shirtColorSelect.disabled = isDisabled;
 	}
 
-	function updateAvailableActivities(selectedActivity) {
-		const activities = activitiesDiv.querySelectorAll('input[type="checkbox"]');
-		const date = selectedActivity.getAttribute('data-day-and-time');
-		activities.forEach((activity) => {
-			const activityDate = activity.getAttribute('data-day-and-time');
-			if (date === activityDate) activity.disabled = true;
-			else activity.disabled = false;
-		});
-	}
+	// Need to figure out how to disable based on selected activities
+	// function updateAvailableActivities(selectedActivity) {
+	// 	const activities = activitiesDiv.querySelectorAll('input[type="checkbox"]');
+	// 	const selectedActivities = [];
+	// 	const notSelectedActivities = [];
+	// 	activities.forEach((activity) => {
+	// 		if (activity.checked) selectedActivities.push(activity);
+	// 		else notSelectedActivities.push(activity);
+	// 	});
+	// 	selectedActivities.map((selectedActivity) => {
+	// 		const activityDate = selectedActivity.getAttribute('data-day-and-time');
+	// 		notSelectedActivities.map((activity) => {
+	// 			if (activityDate === activity.getAttribute('data-day-and-time')) {
+	// 				activity.disabled = true;
+	// 			} else {
+	// 				activity.disabled = false;
+	// 			}
+	// 		});
+	// 	});
+	// }
 
 	function updateTotalCost(activity) {
 		const activityCost = parseInt(activity.dataset.cost);
@@ -71,7 +87,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	function handleActivityChange(evt) {
 		const { target } = evt;
-		console.log(target);
 		updateAvailableActivities(target);
 		updateTotalCost(target);
 	}
