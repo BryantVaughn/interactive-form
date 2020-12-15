@@ -87,7 +87,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	function handleActivityChange(evt) {
 		const { target } = evt;
-		updateAvailableActivities(target);
+		// updateAvailableActivities(target);
 		updateTotalCost(target);
 	}
 
