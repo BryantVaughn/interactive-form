@@ -22,6 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	// Default payment select to credit card
 	paymentSelect.selectedIndex = 1;
+	togglePaymentDisplay('credit-card');
 
 	// Helper functions
 	function updateShirtColorOptions(design) {
@@ -73,6 +74,16 @@ window.addEventListener('DOMContentLoaded', () => {
 		activitiesCost.textContent = `Total: $${currentTotal}`;
 	}
 
+	function togglePaymentDisplay(paymentType) {
+		const paymentTypeDivs = document.querySelectorAll(
+			'.payment-methods > div[id]'
+		);
+		paymentTypeDivs.forEach((paymentDiv) => {
+			if (paymentDiv.id === paymentType) paymentDiv.style.display = '';
+			else paymentDiv.style.display = 'none';
+		});
+	}
+
 	// Callback functions
 	function handleJobSelectChange(evt) {
 		const { value } = evt.target;
@@ -91,8 +102,14 @@ window.addEventListener('DOMContentLoaded', () => {
 		updateTotalCost(target);
 	}
 
+	function handlePaymentChange(evt) {
+		const { value } = evt.target;
+		togglePaymentDisplay(value);
+	}
+
 	// Event listeners
 	jobRoleSelect.addEventListener('change', handleJobSelectChange);
 	shirtDesignSelect.addEventListener('change', handleDesignSelectChange);
 	activitiesDiv.addEventListener('change', handleActivityChange);
+	paymentSelect.addEventListener('change', handlePaymentChange);
 });
