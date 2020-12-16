@@ -8,7 +8,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	const shirtDesignSelect = document.querySelector('#design');
 	const shirtColorSelect = document.querySelector('#color');
 	const activitiesDiv = document.querySelector('.activities-box');
-	const activities = activityDiv.querySelectorAll('input[type="checkbox"]');
+	const activities = activitiesDiv.querySelectorAll('input[type="checkbox"]');
 	const activitiesCost = document.querySelector('.activities-cost');
 	const paymentSelect = document.querySelector('#payment');
 
@@ -105,6 +105,36 @@ window.addEventListener('DOMContentLoaded', () => {
 		return selectedActivities.length > 0;
 	}
 
+	function isValidCreditCard() {
+		if (paymentSelect.value === 'credit-card') {
+			const cardDetails = document.querySelector(
+				'.payment-methods .credit-card'
+			);
+			const cardNumber = cardDetails.querySelector('#cc-num').value;
+			const cardZip = cardDetails.querySelector('#zip').value;
+			const cardCVV = cardDetails.querySelector('#cvv').value;
+			return (
+				isValidCardNumber(cardNumber) &&
+				isValidZip(cardZip) &&
+				isValidCVV(cardCVV)
+			);
+		}
+
+		return true;
+	}
+
+	function isValidCardNumber(number) {
+		return /^\d{13,16}$/.test(number);
+	}
+
+	function isValidZip(zipCode) {
+		return /^\d{5}$/.test(zipCode);
+	}
+
+	function isValidCVV(cvv) {
+		return /^\d{3}$/.test(cvv);
+	}
+
 	// Callback functions
 	function handleJobSelectChange(evt) {
 		const { value } = evt.target;
@@ -129,7 +159,15 @@ window.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function handleFormSubmit(evt) {
-		if (isValidName() && isValidEmail() && isValidActivities()) {
+		if (
+			!(
+				isValidName() &&
+				isValidEmail() &&
+				isValidActivities() &&
+				isValidCreditCard()
+			)
+		) {
+			evt.preventDefault();
 		}
 	}
 
@@ -139,4 +177,12 @@ window.addEventListener('DOMContentLoaded', () => {
 	activitiesDiv.addEventListener('change', handleActivityChange);
 	paymentSelect.addEventListener('change', handlePaymentChange);
 	form.addEventListener('submit', handleFormSubmit);
+	activities.forEach((activity) => {
+		activity.addEventListener('focus', () =>
+			activity.parentNode.classList.add('focus')
+		);
+		activity.addEventListener('blur', () =>
+			activity.parentNode.classList.remove('focus')
+		);
+	});
 });
