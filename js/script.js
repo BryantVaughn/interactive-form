@@ -1,12 +1,14 @@
 // Wait for DOM content to be loaded in browser
 window.addEventListener('DOMContentLoaded', () => {
 	// Gather DOM elements
+	const form = document.querySelector('form');
 	const nameField = document.querySelector('#name');
 	const jobRoleSelect = document.querySelector('#title');
 	const otherJobRoleField = document.querySelector('#other-job-role');
 	const shirtDesignSelect = document.querySelector('#design');
 	const shirtColorSelect = document.querySelector('#color');
 	const activitiesDiv = document.querySelector('.activities-box');
+	const activities = activityDiv.querySelectorAll('input[type="checkbox"]');
 	const activitiesCost = document.querySelector('.activities-cost');
 	const paymentSelect = document.querySelector('#payment');
 
@@ -84,6 +86,25 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 	}
 
+	// Validation functions
+	function isValidName() {
+		const name = nameField.value;
+		return /\S+/.test(name);
+	}
+
+	function isValidEmail() {
+		const email = document.querySelector('#email').value;
+		return /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
+	}
+
+	function isValidActivities() {
+		const selectedActivities = [];
+		activities.forEach((activity) => {
+			if (activity.checked) selectedActivities.push(activity);
+		});
+		return selectedActivities.length > 0;
+	}
+
 	// Callback functions
 	function handleJobSelectChange(evt) {
 		const { value } = evt.target;
@@ -107,9 +128,15 @@ window.addEventListener('DOMContentLoaded', () => {
 		togglePaymentDisplay(value);
 	}
 
+	function handleFormSubmit(evt) {
+		if (isValidName() && isValidEmail() && isValidActivities()) {
+		}
+	}
+
 	// Event listeners
 	jobRoleSelect.addEventListener('change', handleJobSelectChange);
 	shirtDesignSelect.addEventListener('change', handleDesignSelectChange);
 	activitiesDiv.addEventListener('change', handleActivityChange);
 	paymentSelect.addEventListener('change', handlePaymentChange);
+	form.addEventListener('submit', handleFormSubmit);
 });
