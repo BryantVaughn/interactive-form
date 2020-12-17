@@ -3,6 +3,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	// Gather DOM elements
 	const form = document.querySelector('form');
 	const nameField = document.querySelector('#name');
+	const emailField = document.querySelector('#email');
 	const jobRoleSelect = document.querySelector('#title');
 	const otherJobRoleField = document.querySelector('#other-job-role');
 	const shirtDesignSelect = document.querySelector('#design');
@@ -86,6 +87,19 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 	}
 
+	function toggleValidInputField(inputField, isValid) {
+		const parentNode = inputField.parentNode;
+		if (isValid) {
+			parentNode.classList.remove('not-valid');
+			parentNode.classList.add('valid');
+			parentNode.querySelector('.hint').style.display = 'none';
+		} else {
+			parentNode.classList.add('not-valid');
+			parentNode.classList.remove('valid');
+			parentNode.querySelector('.hint').style.display = '';
+		}
+	}
+
 	// Validation functions
 	function isValidName() {
 		const name = nameField.value;
@@ -93,7 +107,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function isValidEmail() {
-		const email = document.querySelector('#email').value;
+		const email = emailField.value;
 		return /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
 	}
 
@@ -107,32 +121,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	function isValidCreditCard() {
 		if (paymentSelect.value === 'credit-card') {
-			const cardDetails = document.querySelector(
-				'.payment-methods .credit-card'
-			);
-			const cardNumber = cardDetails.querySelector('#cc-num').value;
-			const cardZip = cardDetails.querySelector('#zip').value;
-			const cardCVV = cardDetails.querySelector('#cvv').value;
-			return (
-				isValidCardNumber(cardNumber) &&
-				isValidZip(cardZip) &&
-				isValidCVV(cardCVV)
-			);
+			return isValidCardNumber() && isValidZip() && isValidCVV();
 		}
 
 		return true;
 	}
 
-	function isValidCardNumber(number) {
-		return /^\d{13,16}$/.test(number);
+	function isValidCardNumber() {
+		const cardNumber = document.querySelector('#cc-num').value;
+		return /^\d{13,16}$/.test(cardNumber);
 	}
 
-	function isValidZip(zipCode) {
-		return /^\d{5}$/.test(zipCode);
+	function isValidZip() {
+		const cardZip = document.querySelector('#zip').value;
+		return /^\d{5}$/.test(cardZip);
 	}
 
-	function isValidCVV(cvv) {
-		return /^\d{3}$/.test(cvv);
+	function isValidCVV() {
+		const cardCVV = document.querySelector('#cvv').value;
+		return /^\d{3}$/.test(cardCVV);
 	}
 
 	// Callback functions
@@ -159,15 +166,24 @@ window.addEventListener('DOMContentLoaded', () => {
 	}
 
 	function handleFormSubmit(evt) {
-		if (
-			!(
-				isValidName() &&
-				isValidEmail() &&
-				isValidActivities() &&
-				isValidCreditCard()
-			)
-		) {
+		const validName = isValidName();
+		const validEmail = isValidEmail();
+		const validActivities = isValidActivities();
+		const validCreditCard = isValidCreditCard();
+		if (!(validName && validEmail && validActivities && validCreditCard)) {
 			evt.preventDefault();
+			toggleValidInputField(nameField, validName);
+			toggleValidInputField(emailField, validEmail);
+			toggleValidInputField(activitiesDiv, validActivities);
+			if (paymentSelect.value === 'credit-card') {
+				const ccNum = document.querySelector('#cc-num');
+				const zipCode = document.querySelector('#zip');
+				const cvv = document.querySelector('#cvv');
+
+				toggleValidInputField(ccNum, isValidCardNumber());
+				toggleValidInputField(zipCode, isValidZip());
+				toggleValidInputField(cvv, isValidCVV());
+			}
 		}
 	}
 
