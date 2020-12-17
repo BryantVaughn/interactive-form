@@ -6,7 +6,7 @@ This is an interactive web form using JS to manipulate the DOM based on user sel
 
 ### Real-Time Validation
 
-I included real-time validation for the name and email fields to check whenever a user types into the field. The validation waits to run until there's at least one character in the field, then will update real-time if all validation is met for that input.
+I included real-time validation for the name, email, and activities fields to check if validation is met during interaction. The validation waits to run until there's interaction with the field, then will update real-time if all validation is met for that input. The activities will display successful validation whenever a user checks at least one activity, but if they uncheck all, it will display a failed validation warning.
 
 ### Conditional Error Messaging
 

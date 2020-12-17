@@ -147,7 +147,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	function isValidEmail() {
 		const email = emailField;
 		const emailInput = email.value;
-		const isValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput);
+		const isValid = /^[^@\s]+@[^@.]+\.[a-z]+$/i.test(emailInput);
 		if (!isValid && emailInput.length < 1) {
 			email.parentNode.lastElementChild.textContent =
 				'Email field cannot be blank';
@@ -242,6 +242,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		const { target } = evt;
 		updateAvailableActivities(target);
 		updateTotalCost(target);
+		toggleValidInputField(activitiesDiv, isValidActivities());
 	}
 
 	/***
@@ -297,13 +298,17 @@ window.addEventListener('DOMContentLoaded', () => {
 	});
 
 	// Real-time error messaging event listeners
-	nameField.addEventListener('keyup', () => {
-		if (nameField.value.length > 0) {
+	nameField.addEventListener('keyup', (evt) => {
+		if (nameField.value.length > 0 || evt.code === 'Backspace') {
 			toggleValidInputField(nameField, isValidName());
 		}
 	});
-	emailField.addEventListener('keyup', () => {
-		if (emailField.value.length > 0) {
+	emailField.addEventListener('keyup', (evt) => {
+		if (
+			emailField.value.length > 0 ||
+			evt.code === 'Space' ||
+			evt.code === 'Backspace'
+		) {
 			toggleValidInputField(emailField, isValidEmail());
 		}
 	});
