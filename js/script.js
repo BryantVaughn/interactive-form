@@ -123,7 +123,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		} else {
 			parentNode.classList.add('not-valid');
 			parentNode.classList.remove('valid');
-			parentNode.querySelector('.hint').style.display = '';
+			parentNode.querySelector('.hint').style.display = 'inherit';
 		}
 	}
 
@@ -140,11 +140,22 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	/***
 	 * `isValidEmail` function
-	 * Checks that email field contains a valid email value on submission.
+	 * Checks that email field contains a valid email value.
+	 * Changes the hint message based on if email field is blank, or formatted
+	 * incorrectly.
 	 */
 	function isValidEmail() {
-		const email = emailField.value;
-		return /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
+		const email = emailField;
+		const emailInput = email.value;
+		const isValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailInput);
+		if (!isValid && emailInput.length < 1) {
+			email.parentNode.lastElementChild.textContent =
+				'Email field cannot be blank';
+		} else if (!isValid) {
+			email.parentNode.lastElementChild.textContent =
+				'Email address must be formatted correctly';
+		}
+		return isValid;
 	}
 
 	/***
