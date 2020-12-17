@@ -61,26 +61,27 @@ window.addEventListener('DOMContentLoaded', () => {
 		shirtColorSelect.disabled = isDisabled;
 	}
 
-	// Need to figure out how to disable based on selected activities
-	// function updateAvailableActivities(selectedActivity) {
-	// 	const activities = activitiesDiv.querySelectorAll('input[type="checkbox"]');
-	// 	const selectedActivities = [];
-	// 	const notSelectedActivities = [];
-	// 	activities.forEach((activity) => {
-	// 		if (activity.checked) selectedActivities.push(activity);
-	// 		else notSelectedActivities.push(activity);
-	// 	});
-	// 	selectedActivities.map((selectedActivity) => {
-	// 		const activityDate = selectedActivity.getAttribute('data-day-and-time');
-	// 		notSelectedActivities.map((activity) => {
-	// 			if (activityDate === activity.getAttribute('data-day-and-time')) {
-	// 				activity.disabled = true;
-	// 			} else {
-	// 				activity.disabled = false;
-	// 			}
-	// 		});
-	// 	});
-	// }
+	/***
+	 * `updateAvailableActivities` function
+	 * Receives a changed activity as input and then disables/enables other
+	 * activities with a conflicting day and time.
+	 */
+	function updateAvailableActivities(changedActivity) {
+		const activities = activitiesDiv.querySelectorAll('input[type="checkbox"]');
+		const changedDate = changedActivity.getAttribute('data-day-and-time');
+		activities.forEach((activity) => {
+			const activityDate = activity.getAttribute('data-day-and-time');
+			if (activityDate === changedDate && activity !== changedActivity) {
+				if (changedActivity.checked) {
+					activity.disabled = true;
+					activity.parentNode.classList.add('disabled');
+				} else {
+					activity.disabled = false;
+					activity.parentNode.classList.remove('disabled');
+				}
+			}
+		});
+	}
 
 	/***
 	 * `updateTotalCost` function
@@ -228,7 +229,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	 */
 	function handleActivityChange(evt) {
 		const { target } = evt;
-		// updateAvailableActivities(target);
+		updateAvailableActivities(target);
 		updateTotalCost(target);
 	}
 
