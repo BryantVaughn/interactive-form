@@ -221,17 +221,32 @@ window.addEventListener('DOMContentLoaded', () => {
 		updateShirtColorOptions(value);
 	}
 
+	/***
+	 * `handleActivityChange` function
+	 * Runs when an activity is checked or unchecked to update total cost and
+	 * disable activities that conflict with the times selected.
+	 */
 	function handleActivityChange(evt) {
 		const { target } = evt;
 		// updateAvailableActivities(target);
 		updateTotalCost(target);
 	}
 
+	/***
+	 * `handlePaymentChange` function
+	 * Runs when the payment select is changed to update the displayed payment info.
+	 */
 	function handlePaymentChange(evt) {
 		const { value } = evt.target;
 		togglePaymentDisplay(value);
 	}
 
+	/***
+	 * `handleFormSubmit` function
+	 * Runs when form is submitted. Checks that required fields have valid input
+	 * and updates the display accordingly. If not all required fields are valid,
+	 * submission is stopped and hints are provided to user.
+	 */
 	function handleFormSubmit(evt) {
 		const validName = isValidName();
 		const validEmail = isValidEmail();
