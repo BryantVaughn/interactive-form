@@ -28,6 +28,11 @@ window.addEventListener('DOMContentLoaded', () => {
 	togglePaymentDisplay('credit-card');
 
 	// Helper functions
+
+	/***
+	 * `updateShirtColorOptions` function
+	 * Updates the options in the shirt color select based on the design selected.
+	 */
 	function updateShirtColorOptions(design) {
 		const shirtColorOptions = shirtColorSelect.querySelectorAll(
 			'option[data-theme]'
@@ -39,10 +44,18 @@ window.addEventListener('DOMContentLoaded', () => {
 		toggleShirtColorSelect(false);
 	}
 
+	/***
+	 * `toggleOtherJobInput` function
+	 * Displays or hides the 'Other job role?' text input based on the Job Role select.
+	 */
 	function toggleOtherJobInput(displayVal) {
 		otherJobRoleField.style.display = displayVal;
 	}
 
+	/***
+	 * `toggleShirtColorSelect` function
+	 * Resets shirt color select whenever there is a design option change.
+	 */
 	function toggleShirtColorSelect(isDisabled) {
 		shirtColorSelect.selectedIndex = 0;
 		shirtColorSelect.disabled = isDisabled;
@@ -69,6 +82,10 @@ window.addEventListener('DOMContentLoaded', () => {
 	// 	});
 	// }
 
+	/***
+	 * `updateTotalCost` function
+	 * Updates the total cost display of the checked activities.
+	 */
 	function updateTotalCost(activity) {
 		const activityCost = parseInt(activity.dataset.cost);
 		let currentTotal = parseInt(activitiesCost.textContent.replace(/^\D+/, ''));
@@ -77,6 +94,10 @@ window.addEventListener('DOMContentLoaded', () => {
 		activitiesCost.textContent = `Total: $${currentTotal}`;
 	}
 
+	/***
+	 * `togglePaymentDisplay` function
+	 * Displays the correct payment information based on the payment select option.
+	 */
 	function togglePaymentDisplay(paymentType) {
 		const paymentTypeDivs = document.querySelectorAll(
 			'.payment-methods > div[id]'
@@ -87,6 +108,11 @@ window.addEventListener('DOMContentLoaded', () => {
 		});
 	}
 
+	/***
+	 * `toggleValidInputField` function
+	 * Applies the correct classes and display for required input fields based on
+	 * if they're valid or not.
+	 */
 	function toggleValidInputField(inputField, isValid) {
 		const parentNode = inputField.parentNode;
 		if (isValid) {
@@ -101,16 +127,29 @@ window.addEventListener('DOMContentLoaded', () => {
 	}
 
 	// Validation functions
+
+	/***
+	 * `isValidName` function
+	 * Checks that name field contains a valid value on submission.
+	 */
 	function isValidName() {
 		const name = nameField.value;
 		return /\S+/.test(name);
 	}
 
+	/***
+	 * `isValidEmail` function
+	 * Checks that email field contains a valid email value on submission.
+	 */
 	function isValidEmail() {
 		const email = emailField.value;
 		return /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
 	}
 
+	/***
+	 * `isValidActivities` function
+	 * Checks that at least one activity is checked on submission.
+	 */
 	function isValidActivities() {
 		const selectedActivities = [];
 		activities.forEach((activity) => {
@@ -119,6 +158,12 @@ window.addEventListener('DOMContentLoaded', () => {
 		return selectedActivities.length > 0;
 	}
 
+	/***
+	 * `isValidCreditCard` function
+	 * If payment option is credit card, it checks to make sure the card
+	 * number, zip code, and cvv inputs are correct. If payment is not
+	 * credit card it returns the value of true to skip validation.
+	 */
 	function isValidCreditCard() {
 		if (paymentSelect.value === 'credit-card') {
 			return isValidCardNumber() && isValidZip() && isValidCVV();
@@ -127,28 +172,50 @@ window.addEventListener('DOMContentLoaded', () => {
 		return true;
 	}
 
+	/***
+	 * `isValidCardNumber` function
+	 * Checks that credit card number is between 13 and 16 digits only.
+	 */
 	function isValidCardNumber() {
 		const cardNumber = document.querySelector('#cc-num').value;
 		return /^\d{13,16}$/.test(cardNumber);
 	}
 
+	/***
+	 * `isValidZip` function
+	 * Checks that the zip code value is 5 digits only.
+	 */
 	function isValidZip() {
 		const cardZip = document.querySelector('#zip').value;
 		return /^\d{5}$/.test(cardZip);
 	}
 
+	/***
+	 * `isValidCVV` function
+	 * Checks that the cvv value is 3 digits only.
+	 */
 	function isValidCVV() {
 		const cardCVV = document.querySelector('#cvv').value;
 		return /^\d{3}$/.test(cardCVV);
 	}
 
 	// Callback functions
+
+	/***
+	 * `handleJobSelectChange` function
+	 * Runs when the job select is changed to toggle the display of
+	 * other job input if needed.
+	 */
 	function handleJobSelectChange(evt) {
 		const { value } = evt.target;
 		if (value === 'other') toggleOtherJobInput('');
 		else toggleOtherJobInput('none');
 	}
 
+	/***
+	 * `handleDesignSelectChange` function
+	 * Runs when design select is changed to update the shirt color options.
+	 */
 	function handleDesignSelectChange(evt) {
 		const { value } = evt.target;
 		updateShirtColorOptions(value);
