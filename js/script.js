@@ -284,4 +284,16 @@ window.addEventListener('DOMContentLoaded', () => {
 			activity.parentNode.classList.remove('focus')
 		);
 	});
+
+	// Real-time error messaging event listeners
+	nameField.addEventListener('keyup', () => {
+		if (nameField.value.length > 0) {
+			toggleValidInputField(nameField, isValidName());
+		}
+	});
+	emailField.addEventListener('keyup', () => {
+		if (emailField.value.length > 0) {
+			toggleValidInputField(emailField, isValidEmail());
+		}
+	});
 });
